@@ -44,7 +44,7 @@ image: cross-build
 	docker build -t $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT) .
 
 start:
-	docker run -tid --name=bp2-service $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT)
+	docker run -tid --name=bp2-service -p 8901:8901 $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT)
 
 logs:
 	docker logs bp2-service
