@@ -46,6 +46,9 @@ image: cross-build
 start:
 	docker run -tid --name=bp2-service $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT)
 
+logs:
+	docker logs bp2-service
+
 stop:
 	docker stop $(SERVICE)
 	docker rm $(SERVICE)
