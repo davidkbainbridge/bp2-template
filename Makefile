@@ -32,10 +32,10 @@ cross-build:
 	CGO_ENABLED=0 \
 	GOOS=linux \
 	GOARCH=amd64 \
-	go build -v -o $(SERVICE)-alpine $(MAIN_PACKAGE)
+	go build -v -o $(SERVICE)-docker $(MAIN_PACKAGE)
 
 clean:
-	rm -rf src pkg bin $(SERVICE) $(SERVICE)-alpine
+	rm -rf src pkg bin $(SERVICE) $(SERVICE)-docker
 
 enter:
 	@echo "Unable to access container shell, please use 'docker exec' command."
