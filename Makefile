@@ -30,6 +30,8 @@ build:
 cross-build:
 	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST))))	\
 	CGO_ENABLED=0 \
+	GOOS=linux \
+	GOARCH=amd64 \
 	go build -v -o $(SERVICE)-alpine $(PACKAGES)
 
 clean:
