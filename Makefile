@@ -2,7 +2,7 @@ GITCOMMIT := $(shell git rev-parse --short HEAD 2> /dev/null)
 PACKAGES=github.com/davidkbainbridge/bp2-template
 ALL_PACKAGES=github.com/davidkbainbridge/bp2-template github.com/davidkbainbridge/bp2-template/service
 SERVICE=bp2-service
-DOCKER_FOLDER=davidkbainbridge
+DOCKER_REPO=davidkbainbridge
 
 coverage:
 	@echo "Not Yet Implemented"
@@ -41,10 +41,10 @@ enter:
 	@echo "Unable to access container shell, please use 'docker exec' command."
 
 image: cross-build
-	docker build -t $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT) .
+	docker build -t $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) .
 
 start:
-	docker run -tid --name=bp2-service -p 8901:8901 $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT)
+	docker run -tid --name=bp2-service -p 8901:8901 $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT)
 
 logs:
 	docker logs bp2-service
