@@ -1,5 +1,6 @@
 GITCOMMIT := $(shell git rev-parse --short HEAD 2> /dev/null)
 PACKAGES=github.com/davidkbainbridge/bp2-template
+ALL_PACKAGES=github.com/davidkbainbridge/bp2-template github.com/davidkbainbridge/bp2-template/service
 SERVICE=bp2-service
 DOCKER_FOLDER=davidkbainbridge
 
@@ -9,7 +10,9 @@ coverage:
 
 test:
 	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST)))) \
-	go test $(PACKAGES)
+	go vet $(ALL_PACKAGES)
+	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST)))) \
+	go test -v -cover $(ALL_PACKAGES)
 
 prepare: prepare-venv
 
