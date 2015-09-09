@@ -1,4 +1,4 @@
-# ![](bp_logo.png#top) BluePlanet2 - Go Micro-Service Example ![go-bp2](https://img.shields.io/badge/go--bp2-example-blue.svg)
+# ![](bp_logo.png#top) BluePlanet2 - Go Micro-Service Example [![go-bp2](https://img.shields.io/badge/go--bp2-example-blue.svg)]()
 This project represents an example BluePlanet2 (BP2) micro-service written in
 Google's Go programming language and wrapped in an alpine based docker
 container.
