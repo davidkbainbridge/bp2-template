@@ -1,12 +1,15 @@
 GITCOMMIT := $(shell git rev-parse --short HEAD 2> /dev/null)
+PACKAGES=github.com/davidkbainbridge/bp2-template
+SERVICE=bp2-service
+DOCKER_FOLDER=davidkbainbridge
 
 coverage:
 	@echo "Not Yet Implemented"
 	@echo "This rule produces the test coverage information for the app."
 
 test:
-	@echo "Not Yet Implemented"
-	@echo "This rule is called to instantiate the sanity tests for the app. The test includes unit-test, syntax test, and pylint."
+	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST)))) \
+	go test $(PACKAGES)
 
 prepare: prepare-venv
 
@@ -19,29 +22,28 @@ prepare-venv:
 
 build:
 	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST)))) \
-	go build -v -o bp2-service github.com/davidkbainbridge/bp2-template
+	go build -v -o $(SERVICE) $(PACKAGES)
 
 cross-build:
 	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST))))	\
 	CGO_ENABLED=0 \
-	go build -v -o bp2-service-alpine github.com/davidkbainbridge/bp2-template
+	go build -v -o $(SERVICE)-alpine $(PACKAGES)
 
 clean:
-	rm -rf src pkg bin bp2-service bp2-service-alpine
+	rm -rf src pkg bin $(SERVICE) $(SERVICE)-alpine
 
 enter:
-	@echo "Not Yet Implemented"
-	@echo "When the image is running (through start rule), this rule allows the user to get into the container shell."
+	@echo "Unable to access container shell, please use 'docker exec' command."
 
 image: cross-build
-	docker build -t dbainbri/bp2-service:$(GITCOMMIT) .
+	docker build -t $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT) .
 
 start:
-	docker run -tid --name=bp2-service dbainbri/bp2-service:$(GITCOMMIT)
+	docker run -tid --name=bp2-service $(DOCKER_FOLDER)/$(SERVICE):$(GITCOMMIT)
 
 stop:
-	docker stop bp2-service
-	docker rm bp2-service
+	docker stop $(SERVICE)
+	docker rm $(SERVICE)
 
 dconfigure:
 	@echo "Not Yet Implemented"
