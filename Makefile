@@ -18,8 +18,8 @@ prepare: prepare-venv
 
 prepare-venv:
 	rm -rf src pkg bin
-	mkdir -p src/github.com/davidkbainbridge
-	(cd src/github.com/davidkbainbridge; ln -s ../../.. bp2-template)
+	mkdir -p src/$(dir $(MAIN_PACKAGE))
+	(cd src/$(dir $(MAIN_PACKAGE)); ln -s ../../.. $(notdir $(MAIN_PACKAGE)))
 	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST))))	\
 	go get -d .
 
@@ -44,7 +44,7 @@ image: cross-build
 	docker build -t $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) .
 
 start:
-	docker run -tid --name=bp2-service -p 8901:8901 $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT)
+	docker run -tid --name=$(SERVICE) -p 8901:8901 $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT)
 
 logs:
 	docker logs bp2-service
