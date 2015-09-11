@@ -49,9 +49,9 @@ func Register() {
 		EncodeResponseFunc: encodeResponse,
 	}
 
-	http.Handle("/uppercase", uppercaseHandler)
-	http.Handle("/count", countHandler)
-	http.Handle("/metrics", prometheus.Handler())
+	http.Handle("/string/uppercase", uppercaseHandler)
+	http.Handle("/string/count", countHandler)
+	http.Handle("/string/metrics", prometheus.Handler())
 }
 
 func decodeUppercaseRequest(r *http.Request) (interface{}, error) {

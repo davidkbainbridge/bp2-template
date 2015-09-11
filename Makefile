@@ -42,9 +42,10 @@ enter:
 
 image: cross-build
 	docker build -t $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) .
+	docker tag -f $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) $(DOCKER_REPO)/$(SERVICE):build
 
 start:
-	docker run -tid --name=$(SERVICE) -p 8901:8901 $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT)
+	docker run -tid --name=$(SERVICE) -p 8901:8901 $(DOCKER_REPO)/$(SERVICE):build
 
 logs:
 	docker logs bp2-service
