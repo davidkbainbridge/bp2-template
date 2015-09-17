@@ -3,6 +3,7 @@ MAIN_PACKAGE=github.com/davidkbainbridge/bp2-template
 ALL_PACKAGES=github.com/davidkbainbridge/bp2-template github.com/davidkbainbridge/bp2-template/service
 SERVICE=bp2-service
 DOCKER_REPO=davidkbainbridge
+TD := $(shell mktemp -d /tmp/build.XXXXX)
 
 coverage:
 	@echo "Not Yet Implemented"
@@ -27,6 +28,19 @@ build:
 	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST)))) \
 	go build -v -o $(SERVICE) $(MAIN_PACKAGE)
 
+cross-build-hook-exe:
+	-mkdir -p $(TD)
+	(\
+        cd $(TD); \
+        git clone http://github.com/davidkbainbridge/bp2-hook-to-rest; \
+        cd bp2-hook-to-rest; \
+        make linux; \
+	)
+	mkdir -p bp2/hooks
+	cp $(TD)/bp2-hook-to-rest/hook-to-rest bp2/hooks
+	cp docker/fake-bash bp2/hooks/bash
+	-rm -rf $(TD)
+
 cross-build:
 	GOPATH=$(abspath $(dir $(lastword $(MAKEFILE_LIST))))	\
 	CGO_ENABLED=0 \
@@ -35,12 +49,12 @@ cross-build:
 	go build -v -o $(SERVICE)-docker $(MAIN_PACKAGE)
 
 clean:
-	rm -rf src pkg bin $(SERVICE) $(SERVICE)-docker
+	rm -rf src pkg bin $(SERVICE) $(SERVICE)-docker bp2
 
 enter:
 	@echo "Unable to access container shell, please use 'docker exec' command."
 
-image: cross-build
+image: cross-build cross-build-hook-exe
 	docker build -t $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) .
 	docker tag -f $(DOCKER_REPO)/$(SERVICE):$(GITCOMMIT) $(DOCKER_REPO)/$(SERVICE):build
 

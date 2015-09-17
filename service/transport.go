@@ -35,19 +35,19 @@ func Register() {
 	svc = stringService{}
 	svc = instrumentingMiddleware{requestCount, requestLatency, svc}
 
-	uppercaseHandler := gkhttptransport.Server{
-		Context:            ctx,
-		Endpoint:           makeUppercaseEndpoint(svc),
-		DecodeRequestFunc:  decodeUppercaseRequest,
-		EncodeResponseFunc: encodeResponse,
-	}
+	uppercaseHandler := gkhttptransport.NewServer(
+		ctx,
+		makeUppercaseEndpoint(svc),
+		decodeUppercaseRequest,
+		encodeResponse,
+	)
 
-	countHandler := gkhttptransport.Server{
-		Context:            ctx,
-		Endpoint:           makeCountEndpoint(svc),
-		DecodeRequestFunc:  decodeCountRequest,
-		EncodeResponseFunc: encodeResponse,
-	}
+	countHandler := gkhttptransport.NewServer(
+		ctx,
+		makeCountEndpoint(svc),
+		decodeCountRequest,
+		encodeResponse,
+	)
 
 	http.Handle("/string/uppercase", uppercaseHandler)
 	http.Handle("/string/count", countHandler)

@@ -37,6 +37,7 @@ type uppercaseRequest struct {
 // uppercaseResponse - Response message for Uppercase RPC
 type uppercaseResponse struct {
 	V   string `json:"v,omitempty"`
+	By  string `json:"by,omitempty"`
 	Err string `json:"err,omitempty"`
 }
 
@@ -47,5 +48,6 @@ type countRequest struct {
 
 type countResponse struct {
 	V   int    `json:"v,omitempty"`
+	By  string `json:"by,omitempty"`
 	Err string `json:"err,omitempty"`
 }
