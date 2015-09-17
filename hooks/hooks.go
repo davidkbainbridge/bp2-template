@@ -53,14 +53,13 @@ func HandleHooks(update chan interface{}) {
 		log.Println("SOUNDBOUND-UPDATE")
 	})
 	hooker.HandleFunc("/api/v1/hook/peer-status", func(w http.ResponseWriter, r *http.Request) {
-		log.Println("PEER-STATUS")
 		var data interface{}
 		if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 			log.Printf("ERROR: unable to decode peering data: %s\n", err)
 			return
 		}
 		b, _ := json.MarshalIndent(data, "", "    ")
-		log.Printf("PEER DATA: %v\n", string(b))
+		log.Printf("PEER STATUS: %v\n", string(b))
 
 		ip, err := GetMyIP()
 		if err != nil {
@@ -93,7 +92,7 @@ func HandleHooks(update chan interface{}) {
 			return
 		}
 		b, _ := json.MarshalIndent(data, "", "    ")
-		log.Printf("PEER DATA: %v\n", string(b))
+		log.Printf("PEER UPDATE: %v\n", string(b))
 
 		ip, err := GetMyIP()
 		if err != nil {
